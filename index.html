@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorpresa para Sofi 💖</title>
     <style>
+        /* Estilos generales */
         body {
             margin: 0; padding: 0; background: linear-gradient(120deg, #ff9a9e, #fad0c4);
             overflow-x: hidden; font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #fff; text-align: center; position: relative;
+            min-height: 100vh; /* Para asegurar que el fondo cubra toda la pantalla verticalmente */
         }
 
+        /* Corazones y estrellas (sin cambios en su tamaño, solo en su funcionamiento) */
         @keyframes float {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             100% { transform: translateY(-10vh) scale(1); opacity: 1; }
@@ -21,55 +24,40 @@
             transform: rotate(45deg); animation: float 8s infinite ease-in;
             z-index: -1; box-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
-
-        /* --- MODIFICADO: Corazones más grandes --- */
-        .heart {
-            width: 40px; height: 40px; border-radius: 0;
-        }
+        .heart { width: 40px; height: 40px; border-radius: 0; }
         .heart::before, .heart::after {
             content: ""; position: absolute; background: inherit;
             width: 40px; height: 40px; border-radius: 50%;
         }
-        .heart::before { top: -20px; left: 0; } /* Ajustado a la nueva medida */
-        .heart::after { left: 20px; top: 0; } /* Ajustado a la nueva medida */
-
+        .heart::before { top: -20px; left: 0; }
+        .heart::after { left: 20px; top: 0; }
         .star {
             width: 12px; height: 12px;
             background: radial-gradient(circle, #fff 20%, transparent 70%);
             border-radius: 50%; animation: float 10s infinite ease-in;
         }
-        
-        /* --- MODIFICADO: Mensaje del Día más grande y oculto al inicio --- */
+
+        /* Mensaje del Día: Estilo base (PC) */
         #mensaje-dia-box {
             position: fixed; top: 100px; left: 30px;
             background: rgba(255, 255, 255, 0.85); color: #ff4757;
-            padding: 25px; /* Más padding */
-            border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            width: 280px; /* Más ancho */
-            z-index: 10; text-align: left;
+            padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 280px; z-index: 10; text-align: left;
             animation: float-message 6s ease-in-out infinite;
-            display: none; /* Oculto al inicio */
-            opacity: 0; /* Para la animación de aparición */
-            transition: opacity 0.5s ease-in-out; /* Transición suave */
+            display: none; opacity: 0; transition: opacity 0.5s ease-in-out;
         }
-        #mensaje-dia-box h3 {
-            margin-top: 0; font-size: 1.2em;
-            border-bottom: 2px solid #ff9a9e; padding-bottom: 5px;
-        }
-        #mensaje-dia-box p {
-            font-size: 1.05em; /* Texto un poco más grande */
-            line-height: 1.4;
-        }
+        #mensaje-dia-box h3 { margin-top: 0; font-size: 1.2em; border-bottom: 2px solid #ff9a9e; padding-bottom: 5px; }
+        #mensaje-dia-box p { font-size: 1.05em; line-height: 1.4; }
 
         @keyframes float-message {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-        @media (max-width: 768px) { #mensaje-dia-box { display: none !important; } }
         
-        .container { display: none; position: relative; z-index: 1; padding: 20px; }
+        .container { display: none; position: relative; z-index: 1; padding: 20px 10px; } /* Más padding adaptable */
 
+        /* Título animado */
         h1 {
             margin-top: 40px; font-size: 2.5em; color: #fff;
             text-shadow: 2px 2px 4px #00000055; display: inline-block;
@@ -80,14 +68,19 @@
             50% { transform: scale(1.05); text-shadow: 2px 2px 10px #ff4757aa; }
         }
 
+        /* Galería: Configuración por defecto para PC (3 columnas) */
         .gallery {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas en PC */
             gap: 25px; justify-items: center; margin-top: 30px;
             padding: 0 20px; max-width: 900px; margin-left: auto; margin-right: auto;
         }
+        
         .gallery-item { text-align: center; position: relative; }
         .gallery-item img {
-            width: 250px; height: 250px; object-fit: cover; border-radius: 20px;
+            width: 100%; /* La imagen ocupa todo el espacio de su columna */
+            max-width: 250px; /* Máximo ancho */
+            height: 250px; object-fit: cover; border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: transform 0.3s;
             cursor: pointer;
         }
@@ -112,6 +105,42 @@
             margin-left: 10px; transition: background-color 0.3s;
         }
         button:hover { background-color: #ff4757; }
+
+        /* ============================================== */
+        /* --- CLAVE: DISEÑO RESPONSIVE PARA MÓVILES --- */
+        /* ============================================== */
+        @media (max-width: 768px) {
+            
+            /* Galería: Pasa a 2 columnas para el celular */
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            /* Título: Un poco más pequeño para no ocupar todo el ancho */
+            h1 {
+                font-size: 2em;
+            }
+            
+            /* Mensaje del Día: Se reposiciona y reduce su tamaño */
+            #mensaje-dia-box {
+                position: absolute; /* Cambia a absoluto para que no estorbe al hacer scroll */
+                top: 20px; /* Cerca del borde superior del contenido */
+                left: 50%;
+                transform: translateX(-50%); /* Centrado horizontalmente */
+                width: 90%; /* Ocupa casi todo el ancho de la pantalla */
+                max-width: 400px; /* Límite para que no sea muy grande */
+                padding: 15px;
+                text-align: center;
+                animation: none; /* Desactivamos el efecto flotante para móviles */
+            }
+
+            /* Mover la contraseña un poco más abajo si el mensaje está visible */
+             .password-box {
+                 margin-top: 100px;
+             }
+
+        }
     </style>
 </head>
 <body>
@@ -158,10 +187,9 @@
                 document.querySelector('.password-box').style.display = 'none';
                 document.querySelector('.container').style.display = 'block';
 
-                // --- MODIFICADO: Hacer visible el mensaje del día ---
                 const mensajeBox = document.getElementById('mensaje-dia-box');
-                mensajeBox.style.display = 'block'; // Lo hacemos visible
-                setTimeout(() => { // Esperamos un instante para que la transición funcione
+                mensajeBox.style.display = 'block';
+                setTimeout(() => {
                     mensajeBox.style.opacity = '1';
                 }, 10);
                 
