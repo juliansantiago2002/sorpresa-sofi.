@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorpresa para Sofi 💖</title>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         /* Estilos generales */
         body {
             margin: 0; padding: 0; background: linear-gradient(120deg, #ff9a9e, #fad0c4);
             overflow-x: hidden; font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #fff; text-align: center; position: relative;
-            min-height: 100vh; /* Para asegurar que el fondo cubra toda la pantalla verticalmente */
+            min-height: 100vh;
         }
 
-        /* Corazones y estrellas (sin cambios en su tamaño, solo en su funcionamiento) */
+        /* Corazones y estrellas */
         @keyframes float {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             100% { transform: translateY(-10vh) scale(1); opacity: 1; }
         }
-
         .heart, .star {
             position: absolute; bottom: -10vh; background: rgba(255, 255, 255, 0.8);
             transform: rotate(45deg); animation: float 8s infinite ease-in;
@@ -37,27 +40,39 @@
             border-radius: 50%; animation: float 10s infinite ease-in;
         }
 
-        /* Mensaje del Día: Estilo base (PC) */
+        /* --- MENSAJE DEL DÍA: NUEVA POSICIÓN CENTRADA --- */
         #mensaje-dia-box {
-            position: fixed; top: 100px; left: 30px;
+            margin: 50px auto 20px auto; /* Centrado debajo de las fotos */
             background: rgba(255, 255, 255, 0.85); color: #ff4757;
             padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            width: 280px; z-index: 10; text-align: left;
-            animation: float-message 6s ease-in-out infinite;
+            width: 90%; max-width: 500px;
+            z-index: 10; text-align: left;
             display: none; opacity: 0; transition: opacity 0.5s ease-in-out;
+            /* Eliminamos la posición fija y la animación de flotación */
         }
         #mensaje-dia-box h3 { margin-top: 0; font-size: 1.2em; border-bottom: 2px solid #ff9a9e; padding-bottom: 5px; }
         #mensaje-dia-box p { font-size: 1.05em; line-height: 1.4; }
 
-        @keyframes float-message {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        /* --- NUEVOS ESTILOS PARA COMENTARIOS --- */
+        #daily-comment-section {
+            max-width: 500px;
+            margin: 20px auto 100px auto; /* Debajo del mensaje */
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            text-align: center;
         }
-        
-        .container { display: none; position: relative; z-index: 1; padding: 20px 10px; } /* Más padding adaptable */
+        #daily-comment-section h2 { color: #fff; font-size: 1.5em; margin-bottom: 15px; }
+        #comment-input {
+            width: 90%; height: 80px; padding: 10px; border-radius: 10px;
+            border: none; resize: none; font-size: 1em; margin-bottom: 10px;
+        }
+        .status-message {
+            color: #fff; margin-top: 10px; font-weight: bold;
+        }
 
-        /* Título animado */
+        .container { display: none; position: relative; z-index: 1; padding: 20px 10px; }
+        
         h1 {
             margin-top: 40px; font-size: 2.5em; color: #fff;
             text-shadow: 2px 2px 4px #00000055; display: inline-block;
@@ -68,21 +83,17 @@
             50% { transform: scale(1.05); text-shadow: 2px 2px 10px #ff4757aa; }
         }
 
-        /* Galería: Configuración por defecto para PC (3 columnas) */
+        /* Galería */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas en PC */
-            gap: 25px; justify-items: center; margin-top: 30px;
-            padding: 0 20px; max-width: 900px; margin-left: auto; margin-right: auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;
+            justify-items: center; margin-top: 30px; padding: 0 20px;
+            max-width: 900px; margin-left: auto; margin-right: auto;
         }
-        
         .gallery-item { text-align: center; position: relative; }
         .gallery-item img {
-            width: 100%; /* La imagen ocupa todo el espacio de su columna */
-            max-width: 250px; /* Máximo ancho */
-            height: 250px; object-fit: cover; border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: transform 0.3s;
-            cursor: pointer;
+            width: 100%; max-width: 250px; height: 250px; object-fit: cover;
+            border-radius: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s; cursor: pointer;
         }
         .gallery-item img:hover { transform: scale(1.05); }
 
@@ -106,49 +117,14 @@
         }
         button:hover { background-color: #ff4757; }
 
-        /* ============================================== */
-        /* --- CLAVE: DISEÑO RESPONSIVE PARA MÓVILES --- */
-        /* ============================================== */
+        /* --- DISEÑO RESPONSIVE PARA MÓVILES --- */
         @media (max-width: 768px) {
-            
-            /* Galería: Pasa a 2 columnas para el celular */
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            /* Título: Un poco más pequeño para no ocupar todo el ancho */
-            h1 {
-                font-size: 2em;
-            }
-            
-            /* Mensaje del Día: Se reposiciona y reduce su tamaño */
-            #mensaje-dia-box {
-                position: absolute; /* Cambia a absoluto para que no estorbe al hacer scroll */
-                top: 20px; /* Cerca del borde superior del contenido */
-                left: 50%;
-                transform: translateX(-50%); /* Centrado horizontalmente */
-                width: 90%; /* Ocupa casi todo el ancho de la pantalla */
-                max-width: 400px; /* Límite para que no sea muy grande */
-                padding: 15px;
-                text-align: center;
-                animation: none; /* Desactivamos el efecto flotante para móviles */
-            }
-
-            /* Mover la contraseña un poco más abajo si el mensaje está visible */
-             .password-box {
-                 margin-top: 100px;
-             }
-
+            .gallery { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            h1 { font-size: 2em; }
         }
     </style>
 </head>
 <body>
-    <div id="mensaje-dia-box">
-        <h3>Mensaje del Día 💌</h3>
-        <p>Solo para recordarte que eres mi persona favorita en todo el universo y que pensar en ti hace que todo sea mejor. ¡Te amo!</p>
-    </div>
-
     <div class="password-box">
         <h2>💖 Ingresa la contraseña 💖</h2>
         <input type="password" id="password" placeholder="Contraseña...">
@@ -164,6 +140,18 @@
             <div class="gallery-item"><img src="images/foto4.jpg" alt="foto4"><p class="message"></p></div>
             <div class="gallery-item"><img src="images/foto5.jpg" alt="foto5"><p class="message"></p></div>
             <div class="gallery-item"><img src="images/foto6.jpg" alt="foto6"><p class="message"></p></div>
+        </div>
+
+        <div id="mensaje-dia-box">
+            <h3>Mensaje del Día 💌</h3>
+            <p id="daily-message-text">Solo para recordarte que eres mi persona favorita en todo el universo y que pensar en ti hace que todo sea mejor. ¡Te amo!</p>
+        </div>
+
+        <div id="daily-comment-section">
+            <h2>¿Qué piensas de este mensaje?</h2>
+            <textarea id="comment-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+            <button onclick="submitComment()">Responder</button>
+            <p id="comment-status" class="status-message"></p>
         </div>
     </div>
 
@@ -196,6 +184,23 @@
             } else {
                 alert("Contraseña incorrecta 💔");
             }
+        }
+
+        // --- NUEVA FUNCIÓN PARA EL COMENTARIO DIARIO ---
+        function submitComment() {
+            const comment = document.getElementById('comment-input').value;
+            const status = document.getElementById('comment-status');
+
+            if (comment.trim() === "") {
+                status.textContent = "¡Escribe algo, mi amor! 😉";
+                status.style.color = '#ff4757';
+                return;
+            }
+
+            // SIMULACIÓN DE GUARDADO - EL TOQUE ESPECIAL
+            status.textContent = "¡Mensaje guardado en mi corazón! Lo he leído y es hermoso. Revisa mañana para el nuevo mensaje del día. ❤️";
+            status.style.color = '#fff';
+            document.getElementById('comment-input').value = ""; // Limpiar el área de texto
         }
 
         const mensajes = [
