@@ -1,140 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sorpresa para Sofi 💖</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <style>
-    /* Fondo animado */
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      min-height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background: linear-gradient(270deg, #ffd1dc, #ffb6c1, #ffc0cb, #ffe4e1);
-      background-size: 800% 800%;
-      animation: gradientMove 15s ease infinite;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorpresa para Sofi 💖</title>
+    <style>
+        body {
+            margin: 0; padding: 0; background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            overflow-x: hidden; font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #fff; text-align: center; position: relative;
+        }
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 1; }
+        }
 
-    /* Galería */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(2, 200px);
-      gap: 35px;
-      text-align: center;
-      z-index: 2;
-    }
+        .heart, .star {
+            position: absolute; bottom: -10vh; background: rgba(255, 255, 255, 0.8);
+            transform: rotate(45deg); animation: float 8s infinite ease-in;
+            z-index: -1; box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
 
-    .img-card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      cursor: pointer;
-      background: white;
-      padding: 10px;
-    }
+        /* --- MODIFICADO: Corazones más grandes --- */
+        .heart {
+            width: 40px; height: 40px; border-radius: 0;
+        }
+        .heart::before, .heart::after {
+            content: ""; position: absolute; background: inherit;
+            width: 40px; height: 40px; border-radius: 50%;
+        }
+        .heart::before { top: -20px; left: 0; } /* Ajustado a la nueva medida */
+        .heart::after { left: 20px; top: 0; } /* Ajustado a la nueva medida */
 
-    .img-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    }
+        .star {
+            width: 12px; height: 12px;
+            background: radial-gradient(circle, #fff 20%, transparent 70%);
+            border-radius: 50%; animation: float 10s infinite ease-in;
+        }
+        
+        /* --- MODIFICADO: Mensaje del Día más grande y oculto al inicio --- */
+        #mensaje-dia-box {
+            position: fixed; top: 100px; left: 30px;
+            background: rgba(255, 255, 255, 0.85); color: #ff4757;
+            padding: 25px; /* Más padding */
+            border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 280px; /* Más ancho */
+            z-index: 10; text-align: left;
+            animation: float-message 6s ease-in-out infinite;
+            display: none; /* Oculto al inicio */
+            opacity: 0; /* Para la animación de aparición */
+            transition: opacity 0.5s ease-in-out; /* Transición suave */
+        }
+        #mensaje-dia-box h3 {
+            margin-top: 0; font-size: 1.2em;
+            border-bottom: 2px solid #ff9a9e; padding-bottom: 5px;
+        }
+        #mensaje-dia-box p {
+            font-size: 1.05em; /* Texto un poco más grande */
+            line-height: 1.4;
+        }
 
-    .img-card img {
-      width: 100%;
-      height: 180px;
-      border-radius: 15px;
-      object-fit: cover;
-    }
+        @keyframes float-message {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @media (max-width: 768px) { #mensaje-dia-box { display: none !important; } }
+        
+        .container { display: none; position: relative; z-index: 1; padding: 20px; }
 
-    .message {
-      color: #ff69b4;
-      font-weight: 600;
-      font-size: 1rem;
-      opacity: 0;
-      margin-top: 10px;
-      transition: opacity 0.5s ease;
-    }
+        h1 {
+            margin-top: 40px; font-size: 2.5em; color: #fff;
+            text-shadow: 2px 2px 4px #00000055; display: inline-block;
+            cursor: default; animation: title-animation 4s ease-in-out infinite;
+        }
+        @keyframes title-animation {
+            0%, 100% { transform: scale(1); text-shadow: 2px 2px 4px #00000055; }
+            50% { transform: scale(1.05); text-shadow: 2px 2px 10px #ff4757aa; }
+        }
 
-    .img-card.show .message {
-      opacity: 1;
-    }
+        .gallery {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px; justify-items: center; margin-top: 30px;
+            padding: 0 20px; max-width: 900px; margin-left: auto; margin-right: auto;
+        }
+        .gallery-item { text-align: center; position: relative; }
+        .gallery-item img {
+            width: 250px; height: 250px; object-fit: cover; border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .gallery-item img:hover { transform: scale(1.05); }
 
-    /* Corazones animados */
-    .heart {
-      position: fixed;
-      color: #ff69b4;
-      font-size: 30px;
-      animation: floatHearts 6s linear infinite;
-      opacity: 0.8;
-      z-index: 1;
-    }
+        .message {
+            margin-top: 10px; padding: 8px 12px; background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px; font-size: 1em; font-weight: bold; opacity: 0;
+            transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none; max-width: 250px; display: inline-block; color: #fff;
+        }
+        .message.visible { opacity: 1; transform: translateY(0); }
 
-    @keyframes floatHearts {
-      0% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) scale(1.2);
-        opacity: 0;
-      }
-    }
-  </style>
+        .password-box { text-align: center; margin-top: 200px; z-index: 2; position: relative; }
+        input[type="password"] {
+            padding: 10px; font-size: 18px; border-radius: 8px; border: none;
+            outline: none; text-align: center; color: #333;
+        }
+        button {
+            padding: 10px 15px; font-size: 18px; border: none; border-radius: 8px;
+            background-color: #ff6b81; color: white; cursor: pointer;
+            margin-left: 10px; transition: background-color 0.3s;
+        }
+        button:hover { background-color: #ff4757; }
+    </style>
 </head>
 <body>
-  <div class="gallery">
-    <div class="img-card" onclick="toggleMessage(this)">
-      <img src="img1.jpg" alt="Sofi">
-      <div class="message">💖 Eres mi razón favorita para sonreír 💖</div>
+    <div id="mensaje-dia-box">
+        <h3>Mensaje del Día 💌</h3>
+        <p>Solo para recordarte que eres mi persona favorita en todo el universo y que pensar en ti hace que todo sea mejor. ¡Te amo!</p>
     </div>
-    <div class="img-card" onclick="toggleMessage(this)">
-      <img src="img2.jpg" alt="Amor">
-      <div class="message">🌸 Gracias por hacer cada día especial 🌸</div>
+
+    <div class="password-box">
+        <h2>💖 Ingresa la contraseña 💖</h2>
+        <input type="password" id="password" placeholder="Contraseña...">
+        <button onclick="verificarContraseña()">Entrar</button>
     </div>
-    <div class="img-card" onclick="toggleMessage(this)">
-      <img src="img3.jpg" alt="Sorpresa">
-      <div class="message">✨ Contigo todo es más bonito ✨</div>
+
+    <div class="container">
+        <h1>Te amo Sofi 💞</h1>
+        <div class="gallery">
+            <div class="gallery-item"><img src="images/foto1.jpg" alt="foto1"><p class="message"></p></div>
+            <div class="gallery-item"><img src="images/foto2.jpg" alt="foto2"><p class="message"></p></div>
+            <div class="gallery-item"><img src="images/foto3.jpg" alt="foto3"><p class="message"></p></div>
+            <div class="gallery-item"><img src="images/foto4.jpg" alt="foto4"><p class="message"></p></div>
+            <div class="gallery-item"><img src="images/foto5.jpg" alt="foto5"><p class="message"></p></div>
+            <div class="gallery-item"><img src="images/foto6.jpg" alt="foto6"><p class="message"></p></div>
+        </div>
     </div>
-    <div class="img-card" onclick="toggleMessage(this)">
-      <img src="img4.jpg" alt="Felicidad">
-      <div class="message">💐 Eres mi persona favorita 💐</div>
-    </div>
-  </div>
 
-  <script>
-    function toggleMessage(card) {
-      card.classList.toggle('show');
-    }
+    <script>
+        function createFloatingElement(className, count) {
+            for (let i = 0; i < count; i++) {
+                const element = document.createElement('div'); element.classList.add(className);
+                element.style.left = Math.random() * 100 + 'vw';
+                element.style.animationDuration = (8 + Math.random() * 7) + 's';
+                element.style.animationDelay = (Math.random() * 5) + 's';
+                element.style.opacity = (0.5 + Math.random() * 0.5);
+                document.body.appendChild(element);
+            }
+        }
+        createFloatingElement('heart', 25);
+        createFloatingElement('star', 30);
 
-    // Crear corazones animados
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerHTML = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 30 + 20 + "px";
-      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-      document.body.appendChild(heart);
+        function verificarContraseña() {
+            const input = document.getElementById('password').value;
+            if (input === "sofiaeslinda") {
+                document.querySelector('.password-box').style.display = 'none';
+                document.querySelector('.container').style.display = 'block';
 
-      setTimeout(() => {
-        heart.remove();
-      }, 6000);
-    }
+                // --- MODIFICADO: Hacer visible el mensaje del día ---
+                const mensajeBox = document.getElementById('mensaje-dia-box');
+                mensajeBox.style.display = 'block'; // Lo hacemos visible
+                setTimeout(() => { // Esperamos un instante para que la transición funcione
+                    mensajeBox.style.opacity = '1';
+                }, 10);
+                
+            } else {
+                alert("Contraseña incorrecta 💔");
+            }
+        }
 
-    setInterval(createHeart, 300);
-  </script>
+        const mensajes = [
+            "Eres lo mejor que me ha pasado 💖", "Contigo todo es más bonito 🌹", "Tu sonrisa ilumina mis días ☀️",
+            "Te amo más de lo que imaginas 💕", "Cada momento contigo es un regalo 🎁", "Mi corazón es tuyo por siempre ❤️"
+        ];
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach((item, index) => {
+            const img = item.querySelector('img'); const messageP = item.querySelector('.message');
+            img.addEventListener('click', () => {
+                document.querySelectorAll('.message.visible').forEach(visibleMsg => {
+                    if (visibleMsg !== messageP) { visibleMsg.classList.remove('visible'); }
+                });
+                messageP.textContent = mensajes[index];
+                messageP.classList.toggle('visible');
+            });
+        });
+    </script>
 </body>
 </html>
